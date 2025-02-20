@@ -25,6 +25,27 @@ import scrapy
 #                 'Quotes':quote
 #             }
 
+# class QouteScraper(scrapy.Spider):
+#     name="quote"
+#     start_urls=['https://quotes.toscrape.com/']
+    
+#     def parse(self,response):
+        
+#         for div in response.css('.quote'):
+#             yield{
+#                 'Quote':div.css('.text::text').get(),
+#                 'Author':div.css('.author::text').get()
+#             }
+            
+#         NextURL=response.css('li.next a::attr(href)').get()
+#         print(NextURL)
+        
+#         if NextURL:
+#             yield response.follow(NextURL,callback=self.parse)
+#         else:
+#             print("Last page")
+
+
 class QouteScraper(scrapy.Spider):
     name="quote"
     start_urls=['https://quotes.toscrape.com/']
@@ -32,9 +53,12 @@ class QouteScraper(scrapy.Spider):
     def parse(self,response):
         
         for div in response.css('.quote'):
+            Tags=div.css('.tag::text').getall()
+            Tags=" , ".join(Tags)
             yield{
                 'Quote':div.css('.text::text').get(),
-                'Author':div.css('.author::text').get()
+                'Author':div.css('.author::text').get(),
+                'Tags':Tags
             }
             
         NextURL=response.css('li.next a::attr(href)').get()
