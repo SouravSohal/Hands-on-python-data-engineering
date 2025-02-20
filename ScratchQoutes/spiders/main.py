@@ -36,3 +36,11 @@ class QouteScraper(scrapy.Spider):
                 'Quote':div.css('.text::text').get(),
                 'Author':div.css('.author::text').get()
             }
+            
+        NextURL=response.css('li.next a::attr(href)').get()
+        print(NextURL)
+        
+        if NextURL:
+            yield response.follow(NextURL,callback=self.parse)
+        else:
+            print("Last page")
