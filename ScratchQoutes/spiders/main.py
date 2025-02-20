@@ -14,14 +14,25 @@
 
 import scrapy
 
-class QuoteScraper(scrapy.Spider):
-    name="quotes"
+# class QuoteScraper(scrapy.Spider):
+#     name="quotes"
+#     start_urls=['https://quotes.toscrape.com/']
+    
+#     def parse(self,response):
+        
+#         for quote in response.css('.text::text').getall():
+#             yield{
+#                 'Quotes':quote
+#             }
+
+class QouteScraper(scrapy.Spider):
+    name="quote"
     start_urls=['https://quotes.toscrape.com/']
     
     def parse(self,response):
         
-        for quote in response.css('.text::text').getall():
+        for div in response.css('.quote'):
             yield{
-                'Quotes':quote
+                'Quote':div.css('.text::text').get(),
+                'Author':div.css('.author::text').get()
             }
-        
